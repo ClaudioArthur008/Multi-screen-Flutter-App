@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/property/property_model.dart';
 import 'package:flutter_app/theme/app_theme.dart';
@@ -34,12 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
     }).toList();
   }
 
-  // Les biens mis en avant dans le carrousel (les 5 premiers, par ex.)
   List<Property> get _featuredProperties =>
       MockData.properties.take(5).toList();
-
-  // Le carrousel + le tag "Meilleure offre" ne sont pertinents
-  // que tant qu'aucune recherche/filtre n'est active.
   bool get _isBrowsing => _searchQuery.isEmpty && _selectedType == null;
 
   @override
@@ -49,97 +46,152 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header
-              CustomHeader(
-                user: MockData.currentUser,
-                onNotificationTap: () {
-                  // Action notifications
-                },
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1200),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 12.0,
               ),
-
-              const SizedBox(height: 24),
-
-              // Accroche
-              _buildHeadline(theme, isDark),
-
-              const SizedBox(height: 22),
-
-              // Barre de recherche
-              CustomSearchBar(
-                onChanged: (value) {
-                  setState(() {
-                    _searchQuery = value;
-                  });
-                },
-                onFilterTap: () => _openFilterBottomSheet(context),
-              ),
-
-              const SizedBox(height: 18),
-
-              _buildTypeFilters(),
-
-              const SizedBox(height: 26),
-
-              // Carrousel
-              if (_isBrowsing && _featuredProperties.isNotEmpty) ...[
-                FeaturedCarousel(
-                  properties: _featuredProperties,
-                  onTap: (property) {
-                    // Navigation vers les détails
-                  },
-                ),
-                const SizedBox(height: 28),
-              ],
-
-              // Titre section résultats
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Suggestions',
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  // Header
+                  CustomHeader(
+                    user: MockData.currentUser,
+                    onNotificationTap: () {
+                      // Action notifications
+                    },
                   ),
-                  Text(
-                    '${_filteredProperties.length} résultat(s)',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: isDark
-                          ? AppColors.darkSecondaryText
-                          : AppColors.lightSecondaryText,
-                    ),
+
+                  const SizedBox(height: 24),
+
+                  // Accroche
+                  _buildHeadline(theme, isDark),
+
+                  const SizedBox(height: 22),
+
+                  // Barre de recherche
+                  CustomSearchBar(
+                    onChanged: (value) {
+                      setState(() {
+                        _searchQuery = value;
+                      });
+                    },
+                    onFilterTap: () => _openFilterBottomSheet(context),
                   ),
-                ],
-              ),
 
-              const SizedBox(height: 14),
+                  const SizedBox(height: 18),
 
-              // Liste de logements filtrés
-              _filteredProperties.isEmpty
-                  ? _buildEmptyState(theme, isDark)
-                  : ListView.separated(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: _filteredProperties.length,
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 12),
-                      itemBuilder: (context, index) {
-                        return PropertyCard(
-                          property: _filteredProperties[index],
-                          onTap: () {
-                            // Navigation vers les détails
-                          },
+                  _buildTypeFilters(),
+
+                  const SizedBox(height: 26),
+
+                  // Carrousel
+                  if (_isBrowsing && _featuredProperties.isNotEmpty) ...[
+                    FeaturedCarousel(
+                      properties: _featuredProperties,
+                      onTap: (property) {
+                        context.push(
+                          '/property-detail/${property.id}',
+                          extra: property,
                         );
                       },
                     ),
+                    const SizedBox(height: 28),
+                  ],
 
-              const SizedBox(height: 12),
-            ],
+                  // Titre section résultats
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Suggestions',
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '${_filteredProperties.length} résultat(s)',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: isDark
+                              ? AppColors.darkSecondaryText
+                              : AppColors.lightSecondaryText,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 14),
+
+                  _filteredProperties.isEmpty
+                      ? _buildEmptyState(theme, isDark)
+                      : LayoutBuilder(
+                          builder: (context, constraints) {
+                            // Détermination du nombre de colonnes
+                            int columns = 1;
+                            if (constraints.maxWidth >= 900) {
+                              columns = 3; // Desktop / Grande tablette paysage
+                            } else if (constraints.maxWidth >= 600) {
+                              columns = 2; // Tablette portrait
+                            }
+
+                            // Sur mobile
+                            if (columns == 1) {
+                              return ListView.separated(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: _filteredProperties.length,
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(height: 12),
+                                itemBuilder: (context, index) {
+                                  final property = _filteredProperties[index];
+                                  return PropertyCard(
+                                    property: property,
+                                    onTap: () {
+                                      context.push(
+                                        '/property-detail/${property.id}',
+                                        extra: property,
+                                      );
+                                    },
+                                  );
+                                },
+                              );
+                            }
+
+                            // Sur tablette
+                            return GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: columns,
+                                    crossAxisSpacing: 16,
+                                    mainAxisSpacing: 16,
+                                    childAspectRatio: 0.85,
+                                  ),
+                              itemCount: _filteredProperties.length,
+                              itemBuilder: (context, index) {
+                                final property = _filteredProperties[index];
+                                return PropertyCard(
+                                  property: property,
+                                  onTap: () {
+                                    context.push(
+                                      '/property-detail/${property.id}',
+                                      extra: property,
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        ),
+
+                  const SizedBox(height: 12),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -181,56 +233,197 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // BottomSheet pour le filtrage
   void _openFilterBottomSheet(BuildContext context) {
+    RangeValues currentRangeValues = const RangeValues(100000, 2000000);
+    PropertyType? selectedType;
+    bool isColocation = false;
+
+    final List<PropertyType?> propertyTypes = [null, ...PropertyType.values];
+
     showModalBottomSheet(
       context: context,
-      isScrollControlled:
-          true, // Permet de dépasser la moitié de l'écran si besoin
+      isScrollControlled: true,
+      useRootNavigator: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            left: 20,
-            right: 20,
-            top: 20,
-            bottom:
-                MediaQuery.of(context).viewInsets.bottom +
-                20, // Gestion du clavier
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min, // S'adapte au contenu
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Indicateur visuel de glissement (Handle bar)
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(2),
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            return Padding(
+              padding: EdgeInsets.only(
+                left: 20,
+                right: 20,
+                top: 20,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
-              Text(
-                'Filtres de recherche',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 16),
+                  Text(
+                    'Filtres de recherche',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
 
-              // Contenu de votre formulaire/filtre
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Appliquer'),
+                  // Tranche de prix (RangeSlider)
+                  Text(
+                    'Tranche de prix (Ar)',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  RangeSlider(
+                    values: currentRangeValues,
+                    min: 0,
+                    max: 5000000,
+                    divisions: 50,
+                    activeColor: AppColors.primary,
+                    inactiveColor: AppColors.primary.withValues(alpha: 0.2),
+                    labels: RangeLabels(
+                      '${currentRangeValues.start.round()} Ar',
+                      '${currentRangeValues.end.round()} Ar',
+                    ),
+                    onChanged: (RangeValues values) {
+                      setModalState(() {
+                        currentRangeValues = values;
+                      });
+                    },
+                  ),
+                  // Affichage des valeurs Min et Max sous le slider
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${currentRangeValues.start.round()} Ar',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      Text(
+                        '${currentRangeValues.end.round()} Ar',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  //  Type de logement (Dropdown)
+                  Text(
+                    'Type de logement',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  DropdownButtonFormField<PropertyType?>(
+                    initialValue: selectedType,
+                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).dividerColor,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(
+                          color: AppColors.primary,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                    items: propertyTypes.map((PropertyType? type) {
+                      return DropdownMenuItem<PropertyType?>(
+                        value: type,
+                        child: Text(
+                          type == null
+                              ? 'Tous'
+                              : type.toString().split('.').last,
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (PropertyType? newValue) {
+                      setModalState(() {
+                        selectedType = newValue;
+                      });
+                    },
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(
+                      'Colocation acceptée',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: const Text(
+                      'Afficher uniquement les biens ouverts à la colocation',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    activeThumbColor: AppColors.primary,
+                    value: isColocation,
+                    onChanged: (bool value) {
+                      setModalState(() {
+                        isColocation = value;
+                      });
+                    },
+                  ),
+
+                  const SizedBox(height: 32),
+
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        elevation: 0,
+                      ),
+                      onPressed: () {
+                        // Fermer le BottomSheet en appliquant les filtres
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        'Appliquer',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );

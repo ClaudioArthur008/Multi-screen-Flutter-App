@@ -44,7 +44,7 @@ class _FeaturedCarouselState extends State<FeaturedCarousel> {
             itemBuilder: (context, i) {
               final property = widget.properties[i];
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 1),
+                padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: _FeaturedCard(
                   property: property,
                   isBestDeal: i == 0,

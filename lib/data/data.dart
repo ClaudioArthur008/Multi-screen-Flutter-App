@@ -21,7 +21,7 @@ abstract class MockData {
       location: 'Ivato, Antananarivo',
       price: 1500000,
       type: PropertyType.residence,
-      imageUrl: 'assets/images/residence.jpg',
+      imageUrl: 'assets/images/campus.jfif',
     ),
     Property(
       id: 'AA2',
@@ -31,7 +31,7 @@ abstract class MockData {
       location: 'Ankatso, Antananarivo',
       price: 350000,
       type: PropertyType.room,
-      imageUrl: 'assets/images/room.jpg',
+      imageUrl: 'assets/images/room.jfif',
     ),
     Property(
       id: 'AA3',
@@ -41,7 +41,7 @@ abstract class MockData {
       location: 'Isoraka, Antananarivo',
       price: 900000,
       type: PropertyType.apartment,
-      imageUrl: 'assets/images/apartment.jpg',
+      imageUrl: 'assets/images/appart.jfif',
     ),
   ];
 }
