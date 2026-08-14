@@ -38,35 +38,40 @@ Lodg'in permet de :
 
 # Structure du projet
 
+```
 lib/
 ├── main.dart
-│
-├── models/
-│ ├── property/
-│ │ └── property_model.dart
-│ └── user/
-│ └── user_model.dart
-│
 ├── data/
-│ └── properties.dart
-│
-├── screens/
-│ ├── home_screen.dart
-│ ├── search_screen.dart
-│ ├── property_detail_screen.dart
-│ ├── favorites_screen.dart
-│ └── rental_application_screen.dart
-│
-├── widgets/
-│ ├── property_card.dart
-│ ├── property_search_bar.dart
-│ └── property_type_chip.dart
-│
+│   └── properties.dart
+├── models/
+│   ├── property/
+│   │   └── property_model.dart
+│   ├── rental/
+│   │   └── rental_model.dart
+│   └── user/
+│       └── user_model.dart
 ├── routes/
-│ └── app_router.dart
-│
-└── theme/
-└── app_theme.dart
+│   └── app_router.dart
+├── screens/
+│   ├── booking/
+│   ├── home/
+│   ├── profile/
+│   ├── property_details/
+│   └── search/
+├── theme/
+│   └── app_theme.dart
+└── widgets/
+    ├── property_card.dart
+    ├── property_search_bar.dart
+    └── property_type_chip.dart
+
+assets/
+└── images/
+
+screenshots/
+
+test/
+```
 
 # Captures d'écran
 
@@ -92,13 +97,13 @@ flutter doctor
 ## Cloner le projet
 
 ```bash
-git clone <URL_DU_REPOSITORY>
+git clone https://github.com/ClaudioArthur008/Multi-screen-Flutter-App
 ```
 
 Puis :
 
 ```bash
-cd studynest
+cd flutter_app
 ```
 
 ## Installer les dépendances
@@ -131,7 +136,7 @@ L'objectif est de mettre en pratique les compétences Flutter et les concepts de
 
 ---
 
-## 👨‍💻 Auteur
+## Auteur
 
 **Claudio Arthur**
 
