@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/services/property_filter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/property/property_model.dart';
@@ -20,20 +21,11 @@ class _HomeScreenState extends State<HomeScreen> {
   String _searchQuery = '';
   PropertyType? _selectedType;
 
-  List<Property> get _filteredProperties {
-    return MockData.properties.where((property) {
-      final query = _searchQuery.toLowerCase();
-      final matchesQuery =
-          _searchQuery.isEmpty ||
-          property.designation.toLowerCase().contains(query) ||
-          property.location.toLowerCase().contains(query);
-
-      final matchesType =
-          _selectedType == null || property.type == _selectedType;
-
-      return matchesQuery && matchesType;
-    }).toList();
-  }
+  List<Property> get _filteredProperties => PropertyFilter.apply(
+    MockData.properties,
+    query: _searchQuery,
+    type: _selectedType,
+  );
 
   List<Property> get _featuredProperties =>
       MockData.properties.take(5).toList();

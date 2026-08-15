@@ -5,6 +5,7 @@ import 'package:flutter_app/screens/home/home_screen.dart';
 import 'package:flutter_app/screens/profile/profile_screen.dart';
 import 'package:flutter_app/screens/property_details/property_details.dart';
 import 'package:flutter_app/screens/search/search_screen.dart';
+import 'package:flutter_app/services/add_property_sheet.dart';
 import 'package:flutter_app/theme/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
@@ -671,7 +672,18 @@ class NavBar extends StatelessWidget {
                     child: FloatingActionButton(
                       elevation: 0,
                       backgroundColor: AppColors.primary,
-                      onPressed: () => _openAddBottomSheet(context),
+                      onPressed: () => AddPropertySheet.show(
+                        context,
+                        onAdd: (logement) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                '${logement['designation']} ajouté',
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                       child: const Icon(
                         Icons.add_rounded,
                         color: Colors.white,
