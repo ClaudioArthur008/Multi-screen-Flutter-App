@@ -71,6 +71,9 @@ assets/
 screenshots/
 
 test/
+└── integration_test/
+└── services/
+
 ```
 
 # Captures d'écran
