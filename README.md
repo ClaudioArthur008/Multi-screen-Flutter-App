@@ -47,44 +47,40 @@ lib/
 │ ├── routes/
 │ │ └── app_router.dart
 │ └── theme/
-│ └── app_theme.dart
+│     └── app_theme.dart
 │
 ├── data/
 │ ├── mock_data/
 │ │ └── properties.dart
 │ └── repositories/
-│ ├── mock_property_repository.dart
-│ ├── mock_user_repository.dart
-│ ├── property_repository.dart
-│ └── user_repository.dart
+│     ├── mock_property_repository.dart
+│     ├── mock_user_repository.dart
+│     ├── property_repository.dart
+│     └── user_repository.dart
 │
 ├── domain/
-│ ├── models/
-│ │ ├── property/
-│ │ │ └── property_model.dart
-│ │ ├── rental/
-│ │ │ └── rental_model.dart
-│ │ └── user/
-│ │ └── user_model.dart
-│ └── logic/ <-- (NOUVEAU)
-│ └── property_filter.dart
+│   └──  models/
+│     ├── property/
+│     │   └── property_model.dart
+│     ├── rental/
+│     │    └── rental_model.dart
+│     └── user/
+│         └── user_model.dart
 │
 └── presentation/  
-├── screens/  
-│ ├── add_property/  
-│ │ └── add_property_screen.dart  
-│ ├── booking/
-│ ├── home/
-│ ├── profile/
-│ ├── property_details/
-│ └── search/
-└── widgets/
-├── featured_carroussel.dart
-├── header.dart
-├── property_card.dart
-├── property_chip_type.dart
-├── rental_status_chip.dart
-└── search_bar.dart
+│   ├── screens/  
+│   │    ├── booking/
+│   │    ├── home/
+│   │    ├── profile/
+│   │    ├── property_details/
+│   │    └── search/
+│   └── widgets/
+│        ├── featured_carroussel.dart
+│        ├── header.dart
+│        ├── property_card.dart
+│        ├── property_chip_type.dart
+│        ├── rental_status_chip.dart
+│        └── search_bar.dart
 
 assets/
 └── images/
