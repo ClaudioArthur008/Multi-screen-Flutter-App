@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/routes/app_router.dart';
-import 'package:flutter_app/theme/app_theme.dart';
+import 'package:flutter_app/core/routes/app_router.dart';
+import 'package:flutter_app/core/theme/app_theme.dart';
 
 void main() {
   runApp(const MyApp());

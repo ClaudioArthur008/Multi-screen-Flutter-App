@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/user/user_model.dart';
-import 'package:flutter_app/repository/mock_user_repository.dart';
-import 'package:flutter_app/repository/user_repository.dart';
-import 'package:flutter_app/theme/app_theme.dart';
+import 'package:flutter_app/domain/models/user/user_model.dart';
+import 'package:flutter_app/data/repository/mock_user_repository.dart';
+import 'package:flutter_app/data/repository/user_repository.dart';
+import 'package:flutter_app/core/theme/app_theme.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({

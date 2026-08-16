@@ -1,6 +1,6 @@
-import 'package:flutter_app/services/property_filter.dart';
+import 'package:flutter_app/core/services/property_filter.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_app/models/property/property_model.dart';
+import 'package:flutter_app/domain/models/property/property_model.dart';
 
 void main() {
   final properties = [

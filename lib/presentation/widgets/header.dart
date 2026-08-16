@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/user/user_model.dart';
-import 'package:flutter_app/theme/app_theme.dart';
+import 'package:flutter_app/domain/models/user/user_model.dart';
+import 'package:flutter_app/core/theme/app_theme.dart';
 
 class CustomHeader extends StatelessWidget {
   final User user;

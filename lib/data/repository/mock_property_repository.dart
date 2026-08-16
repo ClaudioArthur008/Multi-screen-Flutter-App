@@ -1,6 +1,6 @@
 import 'package:flutter_app/data/data.dart';
-import 'package:flutter_app/models/property/property_model.dart';
-import 'package:flutter_app/repository/Property_repository.dart';
+import 'package:flutter_app/data/repository/property_repository.dart';
+import 'package:flutter_app/domain/models/property/property_model.dart';
 
 class MockPropertyRepository implements PropertyRepository {
   const MockPropertyRepository({this.simulatedLatency = Duration.zero});

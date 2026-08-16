@@ -38,37 +38,53 @@ Lodg'in permet de :
 
 # Structure du projet
 
-```
+---
+
 lib/
 ├── main.dart
+│
+├── core/
+│ ├── routes/
+│ │ └── app_router.dart
+│ └── theme/
+│ └── app_theme.dart
+│
 ├── data/
-│   └── properties.dart
-├── repository/
-│   └── mock_property_repository.dart
-│   ├── mock_user_repository.dart
-│   ├── property_repository.dart
-│   └── user_repository.dart
-├── models/
-│   ├── property/
-│   │   └── property_model.dart
-│   ├── rental/
-│   │   └── rental_model.dart
-│   └── user/
-│       └── user_model.dart
-├── routes/
-│   └── app_router.dart
-├── screens/
-│   ├── booking/
-│   ├── home/
-│   ├── profile/
-│   ├── property_details/
-│   └── search/
-├── theme/
-│   └── app_theme.dart
+│ ├── mock_data/
+│ │ └── properties.dart
+│ └── repositories/
+│ ├── mock_property_repository.dart
+│ ├── mock_user_repository.dart
+│ ├── property_repository.dart
+│ └── user_repository.dart
+│
+├── domain/
+│ ├── models/
+│ │ ├── property/
+│ │ │ └── property_model.dart
+│ │ ├── rental/
+│ │ │ └── rental_model.dart
+│ │ └── user/
+│ │ └── user_model.dart
+│ └── logic/ <-- (NOUVEAU)
+│ └── property_filter.dart
+│
+└── presentation/  
+├── screens/  
+│ ├── add_property/  
+│ │ └── add_property_screen.dart  
+│ ├── booking/
+│ ├── home/
+│ ├── profile/
+│ ├── property_details/
+│ └── search/
 └── widgets/
-    ├── property_card.dart
-    ├── property_search_bar.dart
-    └── property_type_chip.dart
+├── featured_carroussel.dart
+├── header.dart
+├── property_card.dart
+├── property_chip_type.dart
+├── rental_status_chip.dart
+└── search_bar.dart
 
 assets/
 └── images/
@@ -76,10 +92,18 @@ assets/
 screenshots/
 
 test/
+├── domain/
+│ └── models/
+│ └── property_model_test.dart
+├── presentation/
+│ ├── screens/
+│ │ └── add_property_screen_test.dart
+│ └── widgets/
+│ └── property_search_bar_test.dart
+├── services/
 └── integration_test/
-└── services/
 
-```
+---
 
 # Captures d'écran
 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/services/add_property_sheet.dart';
+import 'package:flutter_app/core/services/add_property_sheet.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_app/main.dart';
-import 'package:flutter_app/screens/home/home_screen.dart';
-import 'package:flutter_app/screens/search/search_screen.dart';
-import 'package:flutter_app/screens/property_details/property_details.dart';
-import 'package:flutter_app/widgets/property_card.dart';
+import 'package:flutter_app/presentation/screens/home/home_screen.dart';
+import 'package:flutter_app/presentation/screens/search/search_screen.dart';
+import 'package:flutter_app/presentation/screens/property_details/property_details.dart';
+import 'package:flutter_app/presentation/widgets/property_card.dart';
 import 'package:integration_test/integration_test.dart';
 
 void main() {

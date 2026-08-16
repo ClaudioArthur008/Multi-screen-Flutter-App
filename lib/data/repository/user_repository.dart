@@ -1,4 +1,4 @@
-import 'package:flutter_app/models/user/user_model.dart';
+import 'package:flutter_app/domain/models/user/user_model.dart';
 
 abstract class UserRepository {
   /// Retourne l'utilisateur actuellement connecté.

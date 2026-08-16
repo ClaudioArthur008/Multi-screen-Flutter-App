@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/data/data.dart';
-import 'package:flutter_app/models/property/property_model.dart';
-import 'package:flutter_app/theme/app_theme.dart';
+import 'package:flutter_app/domain/models/property/property_model.dart';
+import 'package:flutter_app/core/theme/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class PropertyDetailsScreen extends StatefulWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/rental/rental_model.dart';
+import 'package:flutter_app/domain/models/rental/rental_model.dart';
 
 class RentalStatusChip extends StatelessWidget {
   final RentalStatus value;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/theme/app_theme.dart';
+import 'package:flutter_app/core/theme/app_theme.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final ValueChanged<String>? onChanged;

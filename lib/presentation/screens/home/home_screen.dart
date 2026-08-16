@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/repository/Property_repository.dart';
-import 'package:flutter_app/repository/mock_property_repository.dart';
-import 'package:flutter_app/repository/mock_user_repository.dart';
-import 'package:flutter_app/repository/user_repository.dart';
-import 'package:flutter_app/services/property_filter.dart';
+import 'package:flutter_app/data/repository/mock_property_repository.dart';
+import 'package:flutter_app/data/repository/mock_user_repository.dart';
+import 'package:flutter_app/data/repository/property_repository.dart';
+import 'package:flutter_app/data/repository/user_repository.dart';
+import 'package:flutter_app/core/services/property_filter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_app/models/property/property_model.dart';
-import 'package:flutter_app/models/user/user_model.dart';
-import 'package:flutter_app/theme/app_theme.dart';
-import 'package:flutter_app/widgets/featured_caroussel.dart';
-import 'package:flutter_app/widgets/header.dart';
-import 'package:flutter_app/widgets/property_card.dart';
-import 'package:flutter_app/widgets/property_chip_type.dart';
-import 'package:flutter_app/widgets/search_bar.dart';
+import 'package:flutter_app/domain/models/property/property_model.dart';
+import 'package:flutter_app/domain/models/user/user_model.dart';
+import 'package:flutter_app/core/theme/app_theme.dart';
+import 'package:flutter_app/presentation/widgets/featured_caroussel.dart';
+import 'package:flutter_app/presentation/widgets/header.dart';
+import 'package:flutter_app/presentation/widgets/property_card.dart';
+import 'package:flutter_app/presentation/widgets/property_chip_type.dart';
+import 'package:flutter_app/presentation/widgets/search_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({

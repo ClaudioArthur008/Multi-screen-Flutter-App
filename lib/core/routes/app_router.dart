@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/property/property_model.dart';
-import 'package:flutter_app/screens/booking/booking_screen.dart';
-import 'package:flutter_app/screens/home/home_screen.dart';
-import 'package:flutter_app/screens/profile/profile_screen.dart';
-import 'package:flutter_app/screens/property_details/property_details.dart';
-import 'package:flutter_app/screens/search/search_screen.dart';
-import 'package:flutter_app/services/add_property_sheet.dart';
-import 'package:flutter_app/theme/app_theme.dart';
+import 'package:flutter_app/domain/models/property/property_model.dart';
+import 'package:flutter_app/presentation/screens/booking/booking_screen.dart';
+import 'package:flutter_app/presentation/screens/home/home_screen.dart';
+import 'package:flutter_app/presentation/screens/profile/profile_screen.dart';
+import 'package:flutter_app/presentation/screens/property_details/property_details.dart';
+import 'package:flutter_app/presentation/screens/search/search_screen.dart';
+import 'package:flutter_app/core/services/add_property_sheet.dart';
+import 'package:flutter_app/core/theme/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
