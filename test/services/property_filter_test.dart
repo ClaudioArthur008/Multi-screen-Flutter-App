@@ -34,7 +34,7 @@ void main() {
       type: PropertyType.apartment,
     );
     expect(result.length, 1);
-    expect(result.first.id, '1'); 
+    expect(result.first.id, '1');
   });
 
   test('retourne tout si aucun filtre', () {
@@ -48,5 +48,21 @@ void main() {
       type: PropertyType.room,
     );
     expect(result, isEmpty);
+  });
+
+  test('filtre par mot-clé sur la localisation', () {
+    final result = PropertyFilter.apply(properties, query: 'fianarantsoa');
+    expect(result.length, 1);
+    expect(result.first.id, '2');
+  });
+
+  test('combine mot-clé et type avec résultat', () {
+    final result = PropertyFilter.apply(
+      properties,
+      query: 'villa',
+      type: PropertyType.residence,
+    );
+    expect(result.length, 1);
+    expect(result.first.id, '2');
   });
 }

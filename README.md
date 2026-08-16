@@ -43,6 +43,11 @@ lib/
 ├── main.dart
 ├── data/
 │   └── properties.dart
+├── repository/
+│   └── mock_property_repository.dart
+│   ├── mock_user_repository.dart
+│   ├── property_repository.dart
+│   └── user_repository.dart
 ├── models/
 │   ├── property/
 │   │   └── property_model.dart

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/repository/Property_repository.dart';
+import 'package:flutter_app/repository/mock_property_repository.dart';
+import 'package:flutter_app/repository/mock_user_repository.dart';
+import 'package:flutter_app/repository/user_repository.dart';
 import 'package:flutter_app/services/property_filter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/property/property_model.dart';
+import 'package:flutter_app/models/user/user_model.dart';
 import 'package:flutter_app/theme/app_theme.dart';
 import 'package:flutter_app/widgets/featured_caroussel.dart';
 import 'package:flutter_app/widgets/header.dart';
@@ -11,7 +15,14 @@ import 'package:flutter_app/widgets/property_chip_type.dart';
 import 'package:flutter_app/widgets/search_bar.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({
+    super.key,
+    this.propertyRepository = const MockPropertyRepository(),
+    this.userRepository = const MockUserRepository(),
+  });
+
+  final PropertyRepository propertyRepository;
+  final UserRepository userRepository;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -21,18 +32,45 @@ class _HomeScreenState extends State<HomeScreen> {
   String _searchQuery = '';
   PropertyType? _selectedType;
 
+  bool _isLoading = true;
+  List<Property> _properties = [];
+  List<Property> _featuredProperties = [];
+  User? _currentUser;
+
   List<Property> get _filteredProperties => PropertyFilter.apply(
-    MockData.properties,
+    _properties,
     query: _searchQuery,
     type: _selectedType,
   );
 
-  List<Property> get _featuredProperties =>
-      MockData.properties.take(5).toList();
   bool get _isBrowsing => _searchQuery.isEmpty && _selectedType == null;
 
   @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    final properties = await widget.propertyRepository.getAll();
+    final featured = await widget.propertyRepository.getFeatured();
+    final user = await widget.userRepository.getCurrentUser();
+
+    if (!mounted) return;
+    setState(() {
+      _properties = properties;
+      _featuredProperties = featured;
+      _currentUser = user;
+      _isLoading = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_isLoading || _currentUser == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
@@ -51,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   // Header
                   CustomHeader(
-                    user: MockData.currentUser,
+                    user: _currentUser!,
                     onNotificationTap: () {
                       // Action notifications
                     },
