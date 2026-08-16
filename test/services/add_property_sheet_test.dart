@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:flutter_app/domain/models/property/property_model.dart';
-import 'package:flutter_app/core/services/add_property_sheet.dart';
+import 'package:flutter_app/presentation/widgets/add_property_sheet.dart';
 
 void main() {
   Widget wrap(Widget child) => MaterialApp(home: Scaffold(body: child));
-
-  const errorMessage =
-      'Veuillez renseigner au moins un titre et un prix valide.';
 
   Future<void> prepareScreen(WidgetTester tester) async {
     tester.view.physicalSize = const Size(1080, 2200);
@@ -49,15 +46,18 @@ void main() {
       '150000',
     );
 
+    await tester.enterText(
+      find.byKey(const Key('add_property_location_field')),
+      'Antananarivo',
+    );
+
     await tapSaveButton(tester);
 
-    expect(find.text(errorMessage), findsOneWidget);
+    expect(find.text('Le titre est obligatoire'), findsOneWidget);
     expect(captured, isNull);
   });
 
-  testWidgets('affiche une erreur si le prix est invalide ou nul', (
-    tester,
-  ) async {
+  testWidgets('affiche une erreur si le prix est vide', (tester) async {
     await prepareScreen(tester);
 
     Map<String, dynamic>? captured;
@@ -73,7 +73,8 @@ void main() {
 
     await tapSaveButton(tester);
 
-    expect(find.text(errorMessage), findsOneWidget);
+    expect(find.text('Le prix est obligatoire'), findsOneWidget);
+    expect(find.text('La localisation est obligatoire'), findsOneWidget);
     expect(captured, isNull);
   });
 
@@ -94,9 +95,14 @@ void main() {
       '0',
     );
 
+    await tester.enterText(
+      find.byKey(const Key('add_property_location_field')),
+      'Antananarivo',
+    );
+
     await tapSaveButton(tester);
 
-    expect(find.text(errorMessage), findsOneWidget);
+    expect(find.text('Le prix doit être supérieur à 0'), findsOneWidget);
   });
 
   testWidgets(
@@ -133,7 +139,10 @@ void main() {
       expect(captured!['location'], 'Antananarivo');
       expect(captured!['type'], PropertyType.apartment);
       expect(captured!['mode'], RentalMode.individual);
-      expect(find.text(errorMessage), findsNothing);
+
+      expect(find.text('Le titre est obligatoire'), findsNothing);
+      expect(find.text('Le prix est obligatoire'), findsNothing);
+      expect(find.text('La localisation est obligatoire'), findsNothing);
     },
   );
 
@@ -176,9 +185,79 @@ void main() {
       '800000',
     );
 
+    await tester.enterText(
+      find.byKey(const Key('add_property_location_field')),
+      'Antananarivo',
+    );
+
     await tapSaveButton(tester);
 
     expect(captured, isNotNull);
     expect(captured!['type'], secondType);
+  });
+
+  testWidgets('refuse une capacité négative', (tester) async {
+    await prepareScreen(tester);
+
+    await tester.pumpWidget(wrap(const AddPropertySheet()));
+
+    await tester.enterText(
+      find.byKey(const Key('add_property_designation_field')),
+      'Studio',
+    );
+
+    await tester.enterText(
+      find.byKey(const Key('add_property_price_field')),
+      '200000',
+    );
+
+    await tester.enterText(
+      find.byKey(const Key('add_property_location_field')),
+      'Antananarivo',
+    );
+
+    await tester.enterText(
+      find.byKey(const Key('add_property_capacity_field')),
+      '-2',
+    );
+
+    await tapSaveButton(tester);
+
+    expect(find.text('Doit être un nombre entier positif'), findsOneWidget);
+  });
+
+  testWidgets("affiche une erreur si l'URL de l'image est invalide", (
+    tester,
+  ) async {
+    await prepareScreen(tester);
+
+    await tester.pumpWidget(wrap(const AddPropertySheet()));
+
+    await tester.enterText(
+      find.byKey(const Key('add_property_designation_field')),
+      'Studio',
+    );
+
+    await tester.enterText(
+      find.byKey(const Key('add_property_price_field')),
+      '200000',
+    );
+
+    await tester.enterText(
+      find.byKey(const Key('add_property_location_field')),
+      'Antananarivo',
+    );
+
+    await tester.enterText(
+      find.byKey(const Key('add_property_image_field')),
+      'image-test',
+    );
+
+    await tapSaveButton(tester);
+
+    expect(
+      find.text('Veuillez saisir une URL valide (http/https)'),
+      findsOneWidget,
+    );
   });
 }

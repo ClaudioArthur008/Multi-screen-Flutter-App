@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/core/services/add_property_sheet.dart';
+import 'package:flutter_app/presentation/widgets/add_property_sheet.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/presentation/screens/home/home_screen.dart';

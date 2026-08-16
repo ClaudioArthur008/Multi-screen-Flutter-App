@@ -5,7 +5,7 @@ import 'package:flutter_app/presentation/screens/home/home_screen.dart';
 import 'package:flutter_app/presentation/screens/profile/profile_screen.dart';
 import 'package:flutter_app/presentation/screens/property_details/property_details.dart';
 import 'package:flutter_app/presentation/screens/search/search_screen.dart';
-import 'package:flutter_app/core/services/add_property_sheet.dart';
+import 'package:flutter_app/presentation/widgets/add_property_sheet.dart';
 import 'package:flutter_app/core/theme/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
